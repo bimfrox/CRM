@@ -193,7 +193,7 @@ const Task = () => {
             <form onSubmit={addTask} className="space-y-4">
               <input
                 type="text"
-                placeholder="Task Name"
+                placeholder="Task Person Name"
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
