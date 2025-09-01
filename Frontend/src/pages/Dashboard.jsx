@@ -20,7 +20,7 @@ const Dashboard = () => {
       try {
         const [leadsRes, teamRes, tasksRes] = await Promise.all([
           axios.get("https://crm-8sf1.onrender.com/api/leads"),
-          axios.get("https://crm-8sf1.onrender.com/api/team"),
+          axios.get("https://crm-8sf1.onrender.com/api/teammember"),
           axios.get("https://crm-8sf1.onrender.com/api/tasks"),
         ]);
 
