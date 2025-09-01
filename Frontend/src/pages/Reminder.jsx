@@ -13,7 +13,7 @@ const Reminder = () => {
 
   const fetchReminders = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/reminders");
+      const res = await axios.get("https://crm-8sf1.onrender.com/api/reminders");
       setReminders(res.data);
     } catch (err) {
       console.error(err);
@@ -25,7 +25,7 @@ const Reminder = () => {
     e.preventDefault();
     if (!form.title || !form.date || !form.time) return;
     try {
-      await axios.post("http://localhost:5000/api/reminders", form);
+      await axios.post("https://crm-8sf1.onrender.com/api/reminders", form);
       setForm({ title: "", date: "", time: "", type: "Call" });
       fetchReminders();
     } catch (err) {
@@ -36,7 +36,7 @@ const Reminder = () => {
   // ✅ Mark reminder as done
   const handleDone = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/api/reminders/${id}`, { status: "Completed" });
+      await axios.put(`https://crm-8sf1.onrender.com/api/reminders/${id}`, { status: "Completed" });
       fetchReminders();
     } catch (err) {
       console.error(err);
@@ -46,7 +46,7 @@ const Reminder = () => {
   // ✅ Delete reminder
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/reminders/${id}`);
+      await axios.delete(`https://crm-8sf1.onrender.com/api/reminders/${id}`);
       fetchReminders();
     } catch (err) {
       console.error(err);

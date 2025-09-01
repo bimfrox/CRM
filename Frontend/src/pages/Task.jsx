@@ -18,7 +18,7 @@ const Task = () => {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/tasks");
+      const res = await axios.get("https://crm-8sf1.onrender.com/api/tasks");
       setTasks(res.data);
     } catch (err) {
       console.error("Error fetching tasks:", err);
@@ -30,7 +30,7 @@ const Task = () => {
     e.preventDefault();
     try {
       const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-      const res = await axios.post("http://localhost:5000/api/tasks", {
+      const res = await axios.post("https://crm-8sf1.onrender.com/api/tasks", {
         name: formData.name,
         message: formData.message,
         date: today,
@@ -49,7 +49,7 @@ const Task = () => {
   // Update task status
   const updateStatus = async (id, status) => {
     try {
-      const res = await axios.put(`http://localhost:5000/api/tasks/${id}`, {
+      const res = await axios.put(`https://crm-8sf1.onrender.com/api/tasks/${id}`, {
         status,
       });
       setTasks(tasks.map((t) => (t._id === id ? res.data : t)));
@@ -61,7 +61,7 @@ const Task = () => {
   // Delete task
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+      await axios.delete(`https://crm-8sf1.onrender.com/api/tasks/${id}`);
       setTasks(tasks.filter((t) => t._id !== id));
     } catch (err) {
       console.error("Error deleting task:", err);

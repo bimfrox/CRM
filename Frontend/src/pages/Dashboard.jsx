@@ -19,9 +19,9 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const [leadsRes, teamRes, tasksRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/leads"),
-          axios.get("http://localhost:5000/api/team"),
-          axios.get("http://localhost:5000/api/tasks"),
+          axios.get("https://crm-8sf1.onrender.com/api/leads"),
+          axios.get("https://crm-8sf1.onrender.com/api/team"),
+          axios.get("https://crm-8sf1.onrender.com/api/tasks"),
         ]);
 
         setLeadsCount(leadsRes.data.length);

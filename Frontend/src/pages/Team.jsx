@@ -14,7 +14,7 @@ const Team = () => {
 
   // Fetch team from backend
   useEffect(() => {
-    axios.get("http://localhost:5000/api/team").then((res) => setTeam(res.data));
+    axios.get("https://crm-8sf1.onrender.com/api/team").then((res) => setTeam(res.data));
   }, []);
 
   // Convert file → Base64
@@ -33,7 +33,7 @@ const Team = () => {
   const addMember = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/team", formData);
+      const res = await axios.post("https://crm-8sf1.onrender.com/api/team", formData);
       setTeam([...team, res.data]);
       setFormData({ name: "", role: "", email: "", phone: "", image: "" });
       setShowModal(false);
@@ -44,7 +44,7 @@ const Team = () => {
 
   // Delete member
   const deleteMember = async (id) => {
-    await axios.delete(`http://localhost:5000/api/team/${id}`);
+    await axios.delete(`https://crm-8sf1.onrender.com/api/team/${id}`);
     setTeam(team.filter((m) => m.id !== id));
   };
 

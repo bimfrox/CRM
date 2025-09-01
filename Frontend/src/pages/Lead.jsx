@@ -46,7 +46,7 @@ const Lead = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/leads/import",
+        "https://crm-8sf1.onrender.com/api/leads/import",
         formDataCSV,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -58,7 +58,7 @@ const Lead = () => {
 
   // Delete lead
   const deleteLead = async (id) => {
-    await axios.delete(`http://localhost:5000/api/leads/${id}`);
+    await axios.delete(`https://crm-8sf1.onrender.com/api/leads/${id}`);
     setLeads(leads.filter((l) => l._id !== id));
   };
 
@@ -67,7 +67,7 @@ const Lead = () => {
     const lead = leads.find((l) => l._id === id);
     if (!lead) return;
     const updatedLead = { ...lead, contacted: !lead.contacted };
-    await axios.put(`http://localhost:5000/api/leads/${id}`, updatedLead);
+    await axios.put(`https://crm-8sf1.onrender.com/api/leads/${id}`, updatedLead);
     setLeads(leads.map((l) => (l._id === id ? updatedLead : l)));
   };
 

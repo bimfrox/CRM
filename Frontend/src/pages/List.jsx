@@ -24,7 +24,7 @@ const List = () => {
 
   const fetchClients = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/clients");
+      const { data } = await axios.get("https://crm-8sf1.onrender.com/api/clients");
       setClients(data);
     } catch (err) {
       console.error("Error fetching clients:", err);
@@ -34,7 +34,7 @@ const List = () => {
   const handleAddClient = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/clients", formData);
+      await axios.post("https://crm-8sf1.onrender.com/api/clients", formData);
       setFormData({
         clientId: "",
         name: "",
@@ -54,7 +54,7 @@ const List = () => {
 
   const updateClientField = async (id, field, value) => {
     try {
-      await axios.put(`http://localhost:5000/api/clients/${id}`, {
+      await axios.put(`https://crm-8sf1.onrender.com/api/clients/${id}`, {
         [field]: value,
       });
       fetchClients();

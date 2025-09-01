@@ -15,7 +15,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post("https://crm-8sf1.onrender.com/api/auth/login", {
         username,
         password,
         email,
@@ -31,7 +31,7 @@ const Login = () => {
   const handleOtpVerify = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/verify-otp", {
+      const res = await axios.post("https://crm-8sf1.onrender.com/api/auth/verify-otp", {
         email,
         otp,
       });

@@ -12,7 +12,8 @@ import clientRoutes from "./routes/clientRoutes.js";
 const app = express();
 app.use(cors({
   origin: [ 
-    "http://localhost:5173",          // ✅ local frontend
+    "http://localhost:5173", 
+    "https://crm-8sf1.onrender.com/",         // ✅ local frontend
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // ✅ fixed
