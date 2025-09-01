@@ -12,6 +12,7 @@ import Login from "./Login";
 
 import { AuthProvider } from "../components/AuthContext";
 import PrivateRoute from "../components/PrivateRoute";
+import NotFound from "./NotFound";
 
 const Allroutes = () => {
   return (
@@ -38,7 +39,7 @@ const Allroutes = () => {
         </Route>
 
         {/* Catch-all: redirect to login */}
-        <Route path="*" element={<Login />} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </AuthProvider>
   );

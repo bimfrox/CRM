@@ -5,8 +5,8 @@ import nodemailer from "nodemailer";
 const router = express.Router();
 
 // 🔹 Fixed admin credentials
-const FIXED_USERNAME = "admin";
-const FIXED_PASSWORD = "123456";
+const FIXED_USERNAME = "Bimfrox";
+const FIXED_PASSWORD = "Bimfrox@118";
 const SECRET_KEY = "supersecretjwt";
 
 let otpStore = {}; // { email: otp }
@@ -27,13 +27,13 @@ router.post("/login", async (req, res) => {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "amaurya64566@gmail.com",
-      pass: "zszdnukxpubcgirg", // Gmail App Password
+      user: "bimfroxservice@gmail.com",
+      pass: "ndkekaqfespuijxt", // Gmail App Password
     },
   });
 
   await transporter.sendMail({
-    from: "amaurya64566@gmail.com",
+    from: "bimfroxservice@gmail.com",
     to: email,
     subject: "Your OTP Code",
     text: `Your OTP is ${otp}`,

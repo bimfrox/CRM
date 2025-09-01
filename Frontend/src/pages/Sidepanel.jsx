@@ -76,6 +76,7 @@ const Sidepanel = () => {
               { to: "/task", label: "Tasks", icon: <CheckSquare size={20} /> },
               { to: "/team", label: "Team", icon: <Users size={20} /> },
               { to: "/reminder", label: "Reminders", icon: <Bell size={20} /> },
+
             ].map((item, index) => (
               <li key={index}>
                 <NavLink
