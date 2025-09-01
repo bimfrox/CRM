@@ -90,7 +90,7 @@ const Task = () => {
 
       {/* Tabs */}
       <div className="flex flex-wrap gap-2 mb-6">
-        {["all", "new", "Panding", "completed"].map((tab) => (
+        {["all", "new", "processing", "completed"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -144,12 +144,12 @@ const Task = () => {
                 <div className="flex flex-wrap gap-2">
                   {task.status !== "completed" ? (
                     <>
-                      {task.status !== "Panding" && (
+                      {task.status !== "processing" && (
                         <button
-                          onClick={() => updateStatus(task._id, "Panding")}
+                          onClick={() => updateStatus(task._id, "processing")}
                           className="px-3 py-1 bg-yellow-500 text-white rounded-lg"
                         >
-                          Pending
+                          processing
                         </button>
                       )}
                       {task.status !== "completed" && (

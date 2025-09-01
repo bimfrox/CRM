@@ -2,29 +2,11 @@ import mongoose from "mongoose";
 
 const teamSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    role: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-    },
-    phone: {
-      type: String,
-      required: true,
-    },
-    image: {
-      type: String, // can store base64, URL, or file path
-      required: true,
-    },
+    name: { type: String, required: true, trim: true },
+    role: { type: String, required: true },
+    email: { type: String, required: true, unique: true, lowercase: true },
+    phone: { type: String, required: true },
+    image: { type: String, required: true }, // base64 or URL
   },
   { timestamps: true }
 );

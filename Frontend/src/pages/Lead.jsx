@@ -15,7 +15,7 @@ const Lead = () => {
   // Fetch leads
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/leads")
+      .get("https://crm-8sf1.onrender.com/api/leads")
       .then((res) => setLeads(res.data))
       .catch(console.error);
   }, []);
@@ -24,7 +24,7 @@ const Lead = () => {
   const addLead = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/leads", {
+      const res = await axios.post("https://crm-8sf1.onrender.com/api/leads", {
         ...formData,
         contacted: false,
       });

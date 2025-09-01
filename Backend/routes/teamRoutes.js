@@ -1,58 +1,45 @@
 import express from "express";
-import fs from "fs";
-import path from "path";
+import Team from "../models/TeamMember.js";
+
 
 const router = express.Router();
-const filePath = path.join(process.cwd(), "data", "team.json");
-
-// ✅ Utility: Read JSON
-const readTeam = () => {
-  if (!fs.existsSync(filePath)) return [];
-  const data = fs.readFileSync(filePath);
-  return JSON.parse(data);
-};
-
-// ✅ Utility: Write JSON
-const writeTeam = (team) => {
-  fs.writeFileSync(filePath, JSON.stringify(team, null, 2));
-};
 
 // 🔹 Get all members
-router.get("/", (req, res) => {
-  const team = readTeam();
-  res.json(team);
+router.get("/", async (req, res) => {
+  try {
+    const team = await Team.find();
+    res.json(team);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // 🔹 Add member
-router.post("/", (req, res) => {
-  const { name, role, email, image, phone } = req.body; // ✅ include phone
+router.post("/", async (req, res) => {
+  try {
+    const { name, role, email, phone, image } = req.body;
 
-  if (!name || !role || !email || !image || !phone) {
-    return res.status(400).json({ error: "All fields required" });
+    if (!name || !role || !email || !phone || !image) {
+      return res.status(400).json({ error: "All fields required" });
+    }
+
+    const newMember = new Team({ name, role, email, phone, image });
+    await newMember.save();
+
+    res.json(newMember);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-
-  const team = readTeam();
-  const newMember = {
-    id: Date.now(),
-    name,
-    role,
-    email,
-    image, // can be base64 or URL
-    phone,
-  };
-
-  team.push(newMember);
-  writeTeam(team);
-
-  res.json(newMember);
 });
 
 // 🔹 Delete member
-router.delete("/:id", (req, res) => {
-  const team = readTeam();
-  const updatedTeam = team.filter((m) => m.id !== parseInt(req.params.id));
-  writeTeam(updatedTeam);
-  res.json({ message: "Member deleted" });
+router.delete("/:id", async (req, res) => {
+  try {
+    await Team.findByIdAndDelete(req.params.id);
+    res.json({ message: "Member deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 export default router;

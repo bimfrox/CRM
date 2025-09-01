@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 import taskRoutes from "./routes/taskRoutes.js";
-import teamRoutes from "./routes/teamRoutes.js";
+import teamRoutes from "./routes/teamRoutes.js"
 import reminderRoutes from "./routes/reminderRoutes.js";
 import leadRoutes from "./routes/leadRoutes.js";
 import authRoutes from "./routes/authRoutes.js"; // ✅ Authentication
@@ -42,7 +42,7 @@ mongoose
 
 // Routes
 app.use("/api/tasks", taskRoutes);
-app.use("/api/team", teamRoutes);
+app.use("/api/teammember", teamRoutes);
 app.use("/api/reminders", reminderRoutes);
 app.use("/api/leads", leadRoutes);
 app.use("/api/auth", authRoutes); // ✅ auth route
