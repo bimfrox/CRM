@@ -58,7 +58,7 @@ const Dashboard = () => {
           <p className="text-2xl font-bold text-yellow-800">{tasksCount}</p>
         </div>
       </div>
-
+  
       {/* Chart */}
       <div className="bg-white p-4 rounded-lg shadow">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">
