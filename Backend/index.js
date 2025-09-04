@@ -15,7 +15,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",               // local frontend
   "https://crm-panel-guj7.onrender.com",
-  "https://crm-admin-75f8.onrender.com/", // deployed frontend
+  "https://crm-admin-75f8.onrender.com", // deployed frontend
 ];
 
 // ✅ Strong CORS middleware (single source of truth)
