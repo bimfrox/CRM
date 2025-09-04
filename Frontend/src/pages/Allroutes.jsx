@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import List from "./List";
-import Lead from "./Lead";
 import Task from "./Task";
 import Dashboard from "./Dashboard";
 import Team from "./Team";
@@ -32,7 +31,6 @@ const Allroutes = () => {
         >
           <Route index element={<Dashboard />} />
           <Route path="list" element={<List />} />
-          <Route path="lead" element={<Lead />} />
           <Route path="task" element={<Task />} />
           <Route path="team" element={<Team />} />
           <Route path="reminder" element={<Reminder />} />

@@ -1,26 +1,19 @@
+// backend/models/Lead.js
 import mongoose from "mongoose";
 
 const leadSchema = new mongoose.Schema(
   {
-    name: {
+    name: { type: String, required: true },
+    phone: { type: String },
+    email: { type: String },
+    whatsapp: { type: String },
+    source: { type: String },
+    industry: { type: String },
+    address: { type: String },
+    status: {
       type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-    phone: {
-      type: String,
-      required: true,
-    },
-    source: {
-      type: String,
-      default: "",
-    },
-    contacted: {
-      type: Boolean,
-      default: false,
+      enum: ["New", "Contacted", "In-progress", "Converted", "Lost"],
+      default: "New",
     },
   },
   { timestamps: true }

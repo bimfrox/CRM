@@ -72,12 +72,11 @@ const Sidepanel = () => {
             {[
               { to: "/", label: "Dashboard", icon: <LayoutDashboard size={20} /> },
               { to: "/list", label: "List", icon: <List size={20} /> },
-              { to: "/lead", label: "Lead", icon: <UserPlus size={20} /> },
               { to: "/task", label: "Tasks", icon: <CheckSquare size={20} /> },
               { to: "/team", label: "Team", icon: <Users size={20} /> },
               { to: "/reminder", label: "Reminders", icon: <Bell size={20} /> },
 
-            ].map((item, index) => (
+            ].map((item, index) => (  
               <li key={index}>
                 <NavLink
                   to={item.to}
