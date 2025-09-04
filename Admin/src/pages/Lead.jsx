@@ -6,6 +6,8 @@ export default function Lead() {
   const [leads, setLeads] = useState([]);
   const [search, setSearch] = useState("");
   const [filterDate, setFilterDate] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [filterIndustry, setFilterIndustry] = useState(""); // now as input search
   const [showModal, setShowModal] = useState(false);
   const [newLead, setNewLead] = useState({
     name: "",
@@ -17,9 +19,8 @@ export default function Lead() {
     address: "",
     status: "New",
   });
-  const [updatingId, setUpdatingId] = useState(null); // to disable select while updating
+  const [updatingId, setUpdatingId] = useState(null);
 
-  // point this to your deployed backend (or local during dev)
   const API_URL = "https://crm-8sf1.onrender.com/api/leads";
 
   // fetch leads
@@ -38,25 +39,25 @@ export default function Lead() {
 
   // Optimistic status change
   const handleStatusChange = async (id, newStatus) => {
-    // remember previous status to revert on error
     const prevStatus = leads.find((l) => l._id === id)?.status;
-
-    // optimistic UI update
-    setLeads((prev) => prev.map((l) => (l._id === id ? { ...l, status: newStatus } : l)));
+    setLeads((prev) =>
+      prev.map((l) => (l._id === id ? { ...l, status: newStatus } : l))
+    );
     setUpdatingId(id);
 
     try {
-      const res = await axios.patch(`${API_URL}/${id}/status`, { status: newStatus }, {
-        headers: { "Content-Type": "application/json" },
-      });
-
-      // replace with authoritative response (contains updated doc)
+      const res = await axios.patch(
+        `${API_URL}/${id}/status`,
+        { status: newStatus },
+        { headers: { "Content-Type": "application/json" } }
+      );
       setLeads((prev) => prev.map((l) => (l._id === id ? res.data : l)));
     } catch (err) {
       console.error("Status update failed:", err?.response?.data || err.message);
       alert(err?.response?.data?.message || "Failed to update status");
-      // revert
-      setLeads((prev) => prev.map((l) => (l._id === id ? { ...l, status: prevStatus } : l)));
+      setLeads((prev) =>
+        prev.map((l) => (l._id === id ? { ...l, status: prevStatus } : l))
+      );
     } finally {
       setUpdatingId(null);
     }
@@ -127,10 +128,16 @@ export default function Lead() {
     const matchesDate = filterDate
       ? new Date(lead.createdAt).toISOString().slice(0, 10) === filterDate
       : true;
-    return matchesName && matchesDate;
+    const matchesStatus = filterStatus ? lead.status === filterStatus : true;
+    const matchesIndustry = filterIndustry
+      ? lead.industry?.toLowerCase().includes(filterIndustry.toLowerCase())
+      : true;
+
+    return matchesName && matchesDate && matchesStatus && matchesIndustry;
   });
 
-  const countByStatus = (status) => leads.filter((l) => l.status === status).length;
+  const countByStatus = (status) =>
+    leads.filter((l) => l.status === status).length;
 
   return (
     <div className="p-6">
@@ -144,11 +151,15 @@ export default function Lead() {
         </div>
         <div className="bg-yellow-100 p-4 rounded-xl text-center">
           <div className="text-sm">In-progress</div>
-          <div className="text-2xl font-semibold">{countByStatus("In-progress")}</div>
+          <div className="text-2xl font-semibold">
+            {countByStatus("In-progress")}
+          </div>
         </div>
         <div className="bg-green-100 p-4 rounded-xl text-center">
           <div className="text-sm">Converted</div>
-          <div className="text-2xl font-semibold">{countByStatus("Converted")}</div>
+          <div className="text-2xl font-semibold">
+            {countByStatus("Converted")}
+          </div>
         </div>
         <div className="bg-red-100 p-4 rounded-xl text-center">
           <div className="text-sm">Lost</div>
@@ -158,23 +169,71 @@ export default function Lead() {
 
       {/* actions */}
       <div className="flex flex-col md:flex-row gap-4 mb-6 items-center">
-        <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by name..." className="p-2 border rounded w-full md:w-1/3" />
-        <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} className="p-2 border rounded" />
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by name..."
+          className="p-2 border rounded w-full md:w-1/4"
+        />
+        <input
+          type="date"
+          value={filterDate}
+          onChange={(e) => setFilterDate(e.target.value)}
+          className="p-2 border rounded"
+        />
+        <select
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+          className="p-2 border rounded"
+        >
+          <option value="">All Status</option>
+          <option value="New">New</option>
+          <option value="Contacted">Contacted</option>
+          <option value="In-progress">In-progress</option>
+          <option value="Converted">Converted</option>
+          <option value="Lost">Lost</option>
+        </select>
+        <input
+          type="text"
+          value={filterIndustry}
+          onChange={(e) => setFilterIndustry(e.target.value)}
+          placeholder="Filter by industry..."
+          className="p-2 border rounded"
+        />
         <label className="px-4 py-2 bg-purple-600 text-white rounded cursor-pointer">
           Import CSV
-          <input type="file" accept=".csv" onChange={importCSV} className="hidden" />
+          <input
+            type="file"
+            accept=".csv"
+            onChange={importCSV}
+            className="hidden"
+          />
         </label>
-        <button onClick={exportCSV} className="px-4 py-2 bg-blue-600 text-white rounded">Export CSV</button>
-        <button onClick={() => setShowModal(true)} className="px-4 py-2 bg-green-600 text-white rounded">Add Lead</button>
+        <button
+          onClick={exportCSV}
+          className="px-4 py-2 bg-blue-600 text-white rounded"
+        >
+          Export CSV
+        </button>
+        <button
+          onClick={() => setShowModal(true)}
+          className="px-4 py-2 bg-green-600 text-white rounded"
+        >
+          Add Lead
+        </button>
       </div>
 
       {/* cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredLeads.map((lead) => (
+        {filteredLeads.map((lead, index) => (
           <div key={lead._id} className="bg-white p-4 rounded shadow">
             <div className="flex justify-between items-start">
-              <h4 className="text-lg font-semibold">{lead.name}</h4>
-              <span className="text-xs text-gray-500">{new Date(lead.createdAt).toLocaleDateString()}</span>
+              <h4 className="text-lg font-semibold">
+                #{index + 1} - {lead.name}
+              </h4>
+              <span className="text-xs text-gray-500">
+                {new Date(lead.createdAt).toLocaleDateString()}
+              </span>
             </div>
 
             <div className="mt-2 text-sm text-gray-700">
@@ -200,7 +259,9 @@ export default function Lead() {
                 <option value="Converted">Converted</option>
                 <option value="Lost">Lost</option>
               </select>
-              {updatingId === lead._id && <span className="text-xs text-gray-500 ml-2">Updating...</span>}
+              {updatingId === lead._id && (
+                <span className="text-xs text-gray-500 ml-2">Updating...</span>
+              )}
             </div>
           </div>
         ))}
@@ -212,23 +273,83 @@ export default function Lead() {
           <div className="bg-white p-6 rounded w-full max-w-md shadow-lg">
             <h3 className="text-xl font-bold mb-4">Add Lead</h3>
             <form onSubmit={handleAddLead} className="space-y-3">
-              <input required value={newLead.name} onChange={(e) => setNewLead({ ...newLead, name: e.target.value })} placeholder="Name" className="w-full p-2 border rounded" />
-              <input value={newLead.phone} onChange={(e) => setNewLead({ ...newLead, phone: e.target.value })} placeholder="Phone" className="w-full p-2 border rounded" />
-              <input value={newLead.email} onChange={(e) => setNewLead({ ...newLead, email: e.target.value })} placeholder="Email" className="w-full p-2 border rounded" />
-              <input value={newLead.whatsapp} onChange={(e) => setNewLead({ ...newLead, whatsapp: e.target.value })} placeholder="WhatsApp" className="w-full p-2 border rounded" />
-              <input value={newLead.address} onChange={(e) => setNewLead({ ...newLead, address: e.target.value })} placeholder="Address" className="w-full p-2 border rounded" />
-              <input value={newLead.source} onChange={(e) => setNewLead({ ...newLead, source: e.target.value })} placeholder="Source" className="w-full p-2 border rounded" />
-              <input value={newLead.industry} onChange={(e) => setNewLead({ ...newLead, industry: e.target.value })} placeholder="Industry" className="w-full p-2 border rounded" />
+              <input
+                required
+                value={newLead.name}
+                onChange={(e) =>
+                  setNewLead({ ...newLead, name: e.target.value })
+                }
+                placeholder="Name"
+                className="w-full p-2 border rounded"
+              />
+              <input
+                value={newLead.phone}
+                onChange={(e) =>
+                  setNewLead({ ...newLead, phone: e.target.value })
+                }
+                placeholder="Phone"
+                className="w-full p-2 border rounded"
+              />
+              <input
+                value={newLead.email}
+                onChange={(e) =>
+                  setNewLead({ ...newLead, email: e.target.value })
+                }
+                placeholder="Email"
+                className="w-full p-2 border rounded"
+              />
+              <input
+                value={newLead.whatsapp}
+                onChange={(e) =>
+                  setNewLead({ ...newLead, whatsapp: e.target.value })
+                }
+                placeholder="WhatsApp"
+                className="w-full p-2 border rounded"
+              />
+              <input
+                value={newLead.address}
+                onChange={(e) =>
+                  setNewLead({ ...newLead, address: e.target.value })
+                }
+                placeholder="Address"
+                className="w-full p-2 border rounded"
+              />
+              <input
+                value={newLead.source}
+                onChange={(e) =>
+                  setNewLead({ ...newLead, source: e.target.value })
+                }
+                placeholder="Source"
+                className="w-full p-2 border rounded"
+              />
+              <input
+                value={newLead.industry}
+                onChange={(e) =>
+                  setNewLead({ ...newLead, industry: e.target.value })
+                }
+                placeholder="Industry"
+                className="w-full p-2 border rounded"
+              />
 
               <div className="flex justify-end gap-2">
-                <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-400 text-white rounded">Cancel</button>
-                <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded">Save</button>
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 bg-gray-400 text-white rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-green-600 text-white rounded"
+                >
+                  Save
+                </button>
               </div>
             </form>
           </div>
         </div>
       )}
-
     </div>
   );
 }
